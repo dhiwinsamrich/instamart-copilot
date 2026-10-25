@@ -41,13 +41,42 @@ Step 6 ends with `generated: customers=1200 products=40 orders_raw=13084 tickets
 
 ### Raw data profile
 
-| Table | Shape | Columns with missing values (count, %) |
-|---|---|---|
-| `orders.csv` | 13,084 × 9 | `delivery_minutes` 2,541 (19.42%); all other columns 0 |
-| `customers.csv` | 1,200 × 5 | `age` 61 (5.08%), `gender` 30 (2.50%); all other columns 0 |
-| `products.csv` | 40 × 4 | none |
+All raw tables are read with `keep_default_na=False`, so `N/A` stays a string and is counted as unparseable. A value counts as missing when it is blank or whitespace only. `order_amount`, `delivery_minutes` and `age` load as text (`str`) because of the dirty values.
 
-Read with `keep_default_na=False` (so `N/A` stays a string and is counted as unparseable). Dtypes: `quantity`, `discount_pct`, `price_inr` are int64; every other column, including `order_amount`, `delivery_minutes` and `age`, loads as text because of the dirty values. `tickets.csv` (164 rows, 4 empty texts) is also read with `keep_default_na=False`.
+`orders.csv`, shape 13,084 × 9:
+
+| Column | Dtype | Missing | Missing % |
+|---|---|---|---|
+| order_id | str | 0 | 0.00 |
+| customer_id | str | 0 | 0.00 |
+| product_id | str | 0 | 0.00 |
+| quantity | int64 | 0 | 0.00 |
+| order_ts | str | 0 | 0.00 |
+| status | str | 0 | 0.00 |
+| discount_pct | int64 | 0 | 0.00 |
+| order_amount | str | 0 | 0.00 |
+| delivery_minutes | str | 2,541 | 19.42 |
+
+`customers.csv`, shape 1,200 × 5:
+
+| Column | Dtype | Missing | Missing % |
+|---|---|---|---|
+| customer_id | str | 0 | 0.00 |
+| city | str | 0 | 0.00 |
+| signup_date | str | 0 | 0.00 |
+| age | str | 61 | 5.08 |
+| gender | str | 30 | 2.50 |
+
+`products.csv`, shape 40 × 4:
+
+| Column | Dtype | Missing | Missing % |
+|---|---|---|---|
+| product_id | str | 0 | 0.00 |
+| product_name | str | 0 | 0.00 |
+| category | str | 0 | 0.00 |
+| price_inr | int64 | 0 | 0.00 |
+
+`tickets.csv` (164 rows, 4 empty texts) is also read with `keep_default_na=False` everywhere it is used.
 
 ### Audit figures
 
