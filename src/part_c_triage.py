@@ -17,6 +17,8 @@ OUT = os.path.join(ROOT, "outputs")
 MAX_INPUT_TOKENS = 400
 MAX_RETRIES = 3
 BASE_DELAY = 0.05
+DEMO_TOKEN_BUDGET = 6000
+TOKEN_BUDGET = 100000
 CATS = ["billing", "delivery", "technical", "fraud"]
 PII = [("email", re.compile(r"[\w.+-]+@[\w-]+\.[\w.]+"), "[EMAIL]"),
        ("phone", re.compile(r"\b[6-9]\d{9}\b"), "[PHONE]"),
@@ -131,15 +133,15 @@ fs, fs_log, fs_total, _ = run(tickets, FEW_SHOT)
 print(f"transient errors recovered: {len(fs_log)}")
 summarise("few-shot", fs, fs_total)
 
-print("\n-- budget demo (zero-shot, TOKEN_BUDGET=6000)")
-demo, _, demo_total, _ = run(tickets, ZERO_SHOT, token_budget=6000)
+print(f"\n-- budget demo (zero-shot, TOKEN_BUDGET={DEMO_TOKEN_BUDGET})")
+demo, _, demo_total, _ = run(tickets, ZERO_SHOT, token_budget=DEMO_TOKEN_BUDGET)
 n_exhausted = int((demo["status"] == "budget_exhausted").sum())
 print(f"budget demo: {n_exhausted} tickets budget_exhausted, tokens spent {demo_total}")
 assert n_exhausted >= 1
 demo.drop(columns="true_category").to_csv(os.path.join(OUT, "triage_budget_demo.csv"), index=False)
 
-print("\n-- final run (few-shot, TOKEN_BUDGET=100000)")
-final, final_log, final_total, _ = run(tickets, FEW_SHOT, token_budget=100000)
+print(f"\n-- final run (few-shot, TOKEN_BUDGET={TOKEN_BUDGET})")
+final, final_log, final_total, _ = run(tickets, FEW_SHOT, token_budget=TOKEN_BUDGET)
 seg = pd.read_csv(os.path.join(OUT, "customer_segments.csv")).set_index("customer_id")
 final["segment_name"] = final["customer_id"].map(seg["segment_name"]).fillna("")
 premium = final["customer_id"].map(seg["is_premium"]).fillna(False).astype(bool)

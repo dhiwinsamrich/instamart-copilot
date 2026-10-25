@@ -257,7 +257,7 @@ Zero-shot confusion (rows = true, columns = predicted):
 | fraud | 11 | 0 | 23 | 0 |
 | technical | 10 | 0 | 0 | 29 |
 
-All 21 zero-shot errors are fraud (11) or technical (10) tickets labelled billing, because those tickets also mention charges or payment. The few-shot prompt costs 143.5 versus 57.6 tokens per classified ticket (about 2.5×, 12,636 extra tokens for this batch), and it fixes all 21 errors. That works out to about 600 extra tokens per corrected ticket. It is worth paying here: each of the 11 fraud tickets sent to the billing queue would miss the 2-hour security deadline, so a fraud miss costs far more than about 86 tokens per ticket. If every category were low-risk, the zero-shot prompt at 85.7% would be the cheaper choice.
+All 21 zero-shot errors are fraud (11) or technical (10) tickets labelled billing, because those tickets also mention charges or payment. The few-shot prompt costs 143.5 versus 57.6 tokens per classified ticket (about 2.5×, 12,636 extra tokens for this batch, about 600 per corrected ticket) and fixes all 21 errors. It is worth paying here because each of the 11 fraud tickets sent to the billing queue would miss the 2-hour security deadline, which costs far more than about 86 extra tokens per ticket. If every category were low-risk, the zero-shot prompt at 85.7% would be the cheaper choice.
 
 ### Budget demo and final routing
 
