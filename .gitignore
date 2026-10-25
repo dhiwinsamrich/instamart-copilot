@@ -2,4 +2,5 @@
 .venv/
 __pycache__/
 /Docs
-/data
+/data/raw/
+/data/policies/
